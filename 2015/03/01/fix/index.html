@@ -4,10 +4,13 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>xx | 让思绪飞一会儿</title>
+    <title>谈谈金融信息交换协议 | 让思绪飞一会儿</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="squirrelfish">
+    
+    <meta name="description" content="Fix协议简介
+Fix是洋文The Financial Information eXchange的缩写，中文直译过来就是金融信息交换。Fix协议最初是用来解决券商与机构客户间的通信问题，那时信息是通过电话口头传达的，信息可能丢失或者传达给错误的交易者。Fix协议通过用机器可读的，可被交易者共享的数据">
     
     
     
@@ -62,7 +65,7 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/03/01/list/" title="xx" itemprop="url">xx</a>
+      <a href="/2015/03/01/fix/" title="谈谈金融信息交换协议" itemprop="url">谈谈金融信息交换协议</a>
   </h1>
   <p class="article-author">By
     
@@ -70,7 +73,7 @@
     </p>
   <p class="article-time">
     <time datetime="2015-03-01T14:54:46.000Z" itemprop="datePublished">3月 1 2015</time>
-    更新日期:<time datetime="2015-03-01T14:54:46.000Z" itemprop="dateModified">3月 1 2015</time>
+    更新日期:<time datetime="2015-03-08T07:13:35.000Z" itemprop="dateModified">3月 8 2015</time>
     
   </p>
 </header>
@@ -79,13 +82,40 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Fix协议简介"><span class="toc-number">1.</span> <span class="toc-text">Fix协议简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fix协议语法"><span class="toc-number">2.</span> <span class="toc-text">Fix协议语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据类型"><span class="toc-number">2.1.</span> <span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#消息结构"><span class="toc-number">2.2.</span> <span class="toc-text">消息结构</span></a></li></ol></li></ol>
 		</div>
 		
-		  
+		<h2 id="Fix协议简介">Fix协议简介</h2>
+<p>Fix是洋文The Financial Information eXchange的缩写，中文直译过来就是金融信息交换。Fix协议最初是用来解决券商与机构客户间的通信问题，那时信息是通过电话口头传达的，信息可能丢失或者传达给错误的交易者。Fix协议通过用机器可读的，可被交易者共享的数据取代了这样的通信。后来一些金融机构和经济商为了提升相互间的交易流程效率从而在高效的数据交换中获利，共同制定了Fix协议的开放标准。现在Fix协议已经成为金融行业的推荐标准，在国际金融交易中得到了广泛应用。我国的Step协议就是在Fix协议的基础上制定的。</p>
+<h2 id="Fix协议语法">Fix协议语法</h2>
+<p>Fix协议有两种语法：一种是“标记=值”，还有一种XML形式称为Fixml，fixml数据冗余太多，这里表过不提，今天只谈第一种语法。Fix协议是个很简单的协议，高级程序员（比如说我，嘿嘿）半天就能写出一个像样的实现，下面简要介绍下其语法：</p>
+<h3 id="数据类型">数据类型</h3>
+<p>Fix协议包括以下几种数据类型：</p>
+<p>int：十进制数字串，没有小数点，可包含正负号</p>
+<p>float：包含小数点的十进制数字串，可包含正负号</p>
+<p>string：字符串，大小写敏感</p>
+<p>char：字符，除分界符外的其他字符</p>
+<p>data：原始数据，无格式和内容限制，前面必需紧跟一个域指定数据长度</p>
+<h3 id="消息结构">消息结构</h3>
+<p>Fix协议结构为：消息头+消息体+消息尾</p>
+<p>每个Fix消息由多个“Tag=Value<soh>”组成。其中Tag是一个用来表示数据域的整数，一些Tag值是Fix标准已经规定的，如Tag#8代表消息版本，Tag#10代表校验和，交易所可以根据需要扩展Tag。Value就是上面所说的几种类型的数据值。<soh>是ASCII码为1的字符，用作各个域间的分隔符。</soh></soh></p>
+<p>消息头前三个域为：BeginString（tag#8）+ BodyLen(tag#9)+ MsgType（Tag#35）。BeginString定义协议版本，标准Fix协议的值为FIXxxx，我国的Step协议值为STEPxxx。BodyLen是除8，9，10三个域外消息总长度（严格说来不能称为消息体长，因为里面还包含了其他消息头尾的域）</p>
+<p>消息尾的最后一个域为：CheckSum（Tag#10）。CheckSum域为校验和，计算规则为除Tag#10域外所有字节的ASCII码之和对256取模，不足3位前面补0。</p>
+<p>今天先写到这吧，好久没写东西了，这点文字憋了我一晚上才写出来，本来还想介绍下Fast的，只能留待下次了。</p>
+  
 	</div>
 		<footer class="article-footer clearfix">
 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Fix/">Fix</a><a href="/tags/Fast/">Fast</a><a href="/tags/Step/">Step</a><a href="/tags/金融/">金融</a><a href="/tags/协议/">协议</a>
+  </div>
+
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/协议/">协议</a>
+</div>
 
 
 
@@ -99,13 +129,21 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/03/01/yy/" title="yy">
+ <a href="/2015/03/01/fast/" title="再谈金融信息交换--Fast协议">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  yy</span>
+  再谈金融信息交换--Fast协议</span>
 </a>
 </div>
 
+
+<div class="next">
+<a href="/2015/02/28/hello-world/"  title="Hello World">
+ <strong>NEXT:</strong><br/> 
+ <span>Hello World
+</span>
+</a>
+</div>
 
 </nav>
 
@@ -122,18 +160,35 @@
 <aside class="clearfix">
 
   
-
-
-  <div class="linkslist">
-<h3 rel="grow" class="grow asidetitle">友情链接</h3>
-<ul class="entry">
-<li><a rel="grow" class="grow" href="http://google.com” title=“google”>谷歌</a></li>
-<li><a rel="grow" class="grow" href="http://blog.jobbole.com" title="伯乐在线">伯乐在线</a></li>
-</ul>
+<div class="categorieslist">
+	<p rel="asidetitle grow" class="asidetitle grow">分类</p>
+		<ul>
+		
+			<li><a rel="grow" class="grow" href="/categories/协议/" title="协议">协议<sup>1</sup></a></li>
+		
+		</ul>
 </div>
 
 
+
   
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Fast/" title="Fast">Fast<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Fix/" title="Fix">Fix<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Step/" title="Step">Step<sup>1</sup></a></li>
+		
+			<li><a href="/tags/协议/" title="协议">协议<sup>1</sup></a></li>
+		
+			<li><a href="/tags/金融/" title="金融">金融<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
 
   <div class="rsspart">
 	<a href="atom" target="_blank" title="rss">RSS 订阅</a>
@@ -142,11 +197,18 @@
   
   <div class="archiveslist">
     <p class="asidetitle"><a href="/archives">归档</a></p>
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">6</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">1</span></li></ul>
   </div>
 
 
   
+  <div class="tagcloudlist">
+    <p class="asidetitle">标签云</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/Fast/" style="font-size: NaNpx;">Fast</a><a href="/tags/Fix/" style="font-size: NaNpx;">Fix</a><a href="/tags/Step/" style="font-size: NaNpx;">Step</a><a href="/tags/协议/" style="font-size: NaNpx;">协议</a><a href="/tags/金融/" style="font-size: NaNpx;">金融</a>
+    </div>
+  </div>
+
 
 </aside>
 </div>
